@@ -1,0 +1,56 @@
+- name: Update web servers
+  hosts: localhost
+  vars_files:
+    - ../terraform/tf_vars.yaml
+
+  tasks:
+    - name: Get vars from sops
+      community.sops.load_vars:
+        file: ../secrets.yaml
+        name: secrets
+
+    - name: Login and use the resulting token
+      community.hashi_vault.vault_login:
+        url: https://vault.home
+        role_id: "{{ secrets.vault_role_id }}"
+        secret_id: "{{ secrets.vault_secret_id }}"
+        auth_method: approle
+      register: res
+
+    - name: Read version 5 of a secret from kv2 with a different mount via the remote host
+      community.hashi_vault.vault_kv2_get:
+        url: https://vault.home
+        token: '{{ res | community.hashi_vault.vault_login_token }}'
+        engine_mount_point: kv
+        auth_method: token
+        path: postgres
+      register: response
+
+    - name: Get Network Info of LXC from Proxmox
+      ansible.builtin.uri:
+        url: "https://pve.home:8006/api2/json/nodes/pve/lxc/{{tf_lxc_id}}/interfaces"
+        headers:
+          Authorization: >-
+            PVEAPIToken={{ secrets.pve_token_id }}={{secrets.pve_token_value}}
+        return_content: true
+      register: res
+
+    - name: Extract Instance IP from Response
+      set_fact:
+        instance_ip: >-
+          {{ 
+            res.json.data |
+            community.general.json_query(query) |
+            first | split('/') | first
+          }}
+      vars:
+        query: "[?name=='{{ tf_lxc_net_name }}'].inet"
+
+
+    - name: Run migrations
+      ansible.builtin.command:
+        cmd: flyway info
+      environment:
+        FLYWAY_PASSWORD: "{{ response.secret.pass }}"
+        FLYWAY_URL: "jdbc:postgresql://{{ instance_ip }}:5432/postgres"
+        FLYWAY_USER: postgres
