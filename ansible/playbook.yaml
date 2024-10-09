@@ -1,4 +1,4 @@
-- name: Update web servers
+- name: Run db migrations on created instance
   hosts: localhost
   vars_files:
     - ../terraform/tf_vars.yaml
@@ -17,7 +17,7 @@
         auth_method: approle
       register: res
 
-    - name: Read version 5 of a secret from kv2 with a different mount via the remote host
+    - name: Retrieve DB credentials from vault
       community.hashi_vault.vault_kv2_get:
         url: https://vault.home
         token: '{{ res | community.hashi_vault.vault_login_token }}'
@@ -26,31 +26,23 @@
         path: postgres
       register: response
 
-    - name: Get Network Info of LXC from Proxmox
-      ansible.builtin.uri:
-        url: "https://pve.home:8006/api2/json/nodes/pve/lxc/{{tf_lxc_id}}/interfaces"
-        headers:
-          Authorization: >-
-            PVEAPIToken={{ secrets.pve_token_id }}={{secrets.pve_token_value}}
-        return_content: true
-      register: res
+    - name: Gather databases from instance
+      community.postgresql.postgresql_info:
+        login_password: "{{ response.secret.pass }}"
+        db: postgres
+        filter: databases
+        login_host: "{{ tf_db_host }}"
+      register: db_info
 
-    - name: Extract Instance IP from Response
+    - name: Set databases to run migrations on
       set_fact:
-        instance_ip: >-
-          {{ 
-            res.json.data |
-            community.general.json_query(query) |
-            first | split('/') | first
-          }}
-      vars:
-        query: "[?name=='{{ tf_lxc_net_name }}'].inet"
-
+        dbs: "{{ db_info['databases'].keys() | reject('search', 'template1') | list}}"
 
     - name: Run migrations
       ansible.builtin.command:
-        cmd: flyway info
+        cmd: flyway migrate
       environment:
         FLYWAY_PASSWORD: "{{ response.secret.pass }}"
-        FLYWAY_URL: "jdbc:postgresql://{{ instance_ip }}:5432/postgres"
+        FLYWAY_URL: "jdbc:postgresql://{{ tf_db_host }}:5432/{{item }}"
         FLYWAY_USER: postgres
+      with_items: "{{ dbs }}"

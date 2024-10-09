@@ -25,6 +25,7 @@ in
     if ! test -d ${pgData}; then
       mkdir -p "${pgData}"
       chown -R postgres:postgres "${pgData}"
+      chmod 0750 "${pgData}"
     fi
   '';
 
@@ -32,12 +33,12 @@ in
   services.openssh.settings.PermitRootLogin = lib.mkOverride 999 "yes";
   services.getty.autologinUser = lib.mkOverride 999 "root";
   services.postgresql = {
+    package = pkgs.postgresql;
     enable = true;
     settings = {
       password_encryption = "scram-sha-256";
     };
     ensureDatabases = [
-      "mydatabase"
       "vaultwarden"
     ];
     dataDir = "${pgData}";
@@ -51,15 +52,18 @@ in
         };
       }
     ];
+    extraPlugins = with pkgs.postgresql.pkgs; [
+      postgis
+    ];
     authentication = pkgs.lib.mkOverride 10 ''
-      #...
       #type database DBuser origin-address auth-method
-        local sameuser  all     peer        map=superuser_map
+        local all       postgres trust
+        local sameuser  all      peer          map=superuser_map
       # ipv4
-        host  all      all     127.0.0.1/32   trust
+        #host  all      all     127.0.0.1/32   trust
         host  all      all     192.168.1.0/24 scram-sha-256
       # ipv6
-        host all       all     ::1/128        trust
+        #host all       all     ::1/128        trust
     '';
     identMap = ''
       # ArbitraryMapName systemUser DBUser

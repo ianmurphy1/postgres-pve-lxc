@@ -26,6 +26,7 @@ in
           requests
           hvac
           jmespath
+          psycopg3-binary
         '';
       };
     };

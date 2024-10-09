@@ -16,3 +16,6 @@ destroy:
 configure:
   cd ./ansible && \
     ansible-playbook playbook.yaml
+
+doit:
+  just build deploy configure

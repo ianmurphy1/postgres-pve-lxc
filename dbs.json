@@ -1,0 +1,196 @@
+{
+    "dbs": {
+        "changed": false,
+        "databases": {
+            "postgres": {
+                "access_priv": "",
+                "collate": "en_US.UTF-8",
+                "ctype": "en_US.UTF-8",
+                "encoding": "UTF8",
+                "extensions": {
+                    "plpgsql": {
+                        "description": "PL/pgSQL procedural language",
+                        "extversion": {
+                            "major": 1,
+                            "minor": 0,
+                            "raw": "1.0"
+                        },
+                        "nspname": "pg_catalog"
+                    },
+                    "postgis": {
+                        "description": "PostGIS geometry and geography spatial types and functions",
+                        "extversion": {
+                            "major": 3,
+                            "minor": 4,
+                            "raw": "3.4.3"
+                        },
+                        "nspname": "public"
+                    }
+                },
+                "languages": {
+                    "c": {
+                        "lanacl": "",
+                        "lanowner": "postgres"
+                    },
+                    "internal": {
+                        "lanacl": "",
+                        "lanowner": "postgres"
+                    },
+                    "plpgsql": {
+                        "lanacl": "",
+                        "lanowner": "postgres"
+                    },
+                    "sql": {
+                        "lanacl": "",
+                        "lanowner": "postgres"
+                    }
+                },
+                "namespaces": {
+                    "information_schema": {
+                        "nspacl": "{postgres=UC/postgres,=U/postgres}",
+                        "nspowner": "postgres"
+                    },
+                    "pg_catalog": {
+                        "nspacl": "{postgres=UC/postgres,=U/postgres}",
+                        "nspowner": "postgres"
+                    },
+                    "pg_toast": {
+                        "nspacl": "",
+                        "nspowner": "postgres"
+                    },
+                    "public": {
+                        "nspacl": "{pg_database_owner=UC/pg_database_owner,=U/pg_database_owner}",
+                        "nspowner": "pg_database_owner"
+                    }
+                },
+                "owner": "postgres",
+                "publications": {},
+                "size": "15946211",
+                "subscriptions": {}
+            },
+            "template1": {
+                "access_priv": "=c/postgres\npostgres=CTc/postgres",
+                "collate": "en_US.UTF-8",
+                "ctype": "en_US.UTF-8",
+                "encoding": "UTF8",
+                "extensions": {
+                    "plpgsql": {
+                        "description": "PL/pgSQL procedural language",
+                        "extversion": {
+                            "major": 1,
+                            "minor": 0,
+                            "raw": "1.0"
+                        },
+                        "nspname": "pg_catalog"
+                    }
+                },
+                "languages": {
+                    "c": {
+                        "lanacl": "",
+                        "lanowner": "postgres"
+                    },
+                    "internal": {
+                        "lanacl": "",
+                        "lanowner": "postgres"
+                    },
+                    "plpgsql": {
+                        "lanacl": "",
+                        "lanowner": "postgres"
+                    },
+                    "sql": {
+                        "lanacl": "",
+                        "lanowner": "postgres"
+                    }
+                },
+                "namespaces": {
+                    "information_schema": {
+                        "nspacl": "{postgres=UC/postgres,=U/postgres}",
+                        "nspowner": "postgres"
+                    },
+                    "pg_catalog": {
+                        "nspacl": "{postgres=UC/postgres,=U/postgres}",
+                        "nspowner": "postgres"
+                    },
+                    "pg_toast": {
+                        "nspacl": "",
+                        "nspowner": "postgres"
+                    },
+                    "public": {
+                        "nspacl": "{pg_database_owner=UC/pg_database_owner,=U/pg_database_owner}",
+                        "nspowner": "pg_database_owner"
+                    }
+                },
+                "owner": "postgres",
+                "publications": {},
+                "size": "7746019",
+                "subscriptions": {}
+            },
+            "vaultwarden": {
+                "access_priv": "",
+                "collate": "en_US.UTF-8",
+                "ctype": "en_US.UTF-8",
+                "encoding": "UTF8",
+                "extensions": {
+                    "plpgsql": {
+                        "description": "PL/pgSQL procedural language",
+                        "extversion": {
+                            "major": 1,
+                            "minor": 0,
+                            "raw": "1.0"
+                        },
+                        "nspname": "pg_catalog"
+                    }
+                },
+                "languages": {
+                    "c": {
+                        "lanacl": "",
+                        "lanowner": "postgres"
+                    },
+                    "internal": {
+                        "lanacl": "",
+                        "lanowner": "postgres"
+                    },
+                    "plpgsql": {
+                        "lanacl": "",
+                        "lanowner": "postgres"
+                    },
+                    "sql": {
+                        "lanacl": "",
+                        "lanowner": "postgres"
+                    }
+                },
+                "namespaces": {
+                    "information_schema": {
+                        "nspacl": "{postgres=UC/postgres,=U/postgres}",
+                        "nspowner": "postgres"
+                    },
+                    "pg_catalog": {
+                        "nspacl": "{postgres=UC/postgres,=U/postgres}",
+                        "nspowner": "postgres"
+                    },
+                    "pg_toast": {
+                        "nspacl": "",
+                        "nspowner": "postgres"
+                    },
+                    "public": {
+                        "nspacl": "{pg_database_owner=UC/pg_database_owner,=U/pg_database_owner}",
+                        "nspowner": "pg_database_owner"
+                    }
+                },
+                "owner": "vaultwarden",
+                "publications": {},
+                "size": "7680483",
+                "subscriptions": {}
+            }
+        },
+        "failed": false,
+        "in_recovery": null,
+        "pending_restart_settings": [],
+        "repl_slots": {},
+        "replications": {},
+        "roles": {},
+        "settings": {},
+        "tablespaces": {},
+        "version": {}
+    }
+}

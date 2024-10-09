@@ -51,3 +51,5 @@ generate/result
 
 *sops*
 secrets.yaml
+
+**/tf_vars.yaml
