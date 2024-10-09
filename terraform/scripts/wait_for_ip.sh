@@ -26,7 +26,7 @@ while true; do
 	# when it does.
 	[[ $(jq 'has("inet")' <<<${IF_BLOCK}) == true ]] && break
 
-	sleep 5
+	sleep 1
 done
 
 # Terraform wants an object return so oblige it
