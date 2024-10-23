@@ -1,6 +1,0 @@
-[flyway]
-# environment = "sample" # It is recommended to configure environment as a commandline argument. This allows using different environments depending on the caller.
-locations = ["filesystem:sql"]
-[environments.default]
-user = "postgres"
-url = "jdbc:postgresql://192.168.1.171/postgres"

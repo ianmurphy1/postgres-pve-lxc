@@ -4,13 +4,13 @@
 # marking the deployment complete
 set -e
 
-eval "$(jq -r '@sh "INAME=\(.iname) LXC_ID=\(.lxc_id) TOKEN=\(.token) TOKEN_ID=\(.token_id)"')"
+eval "$(jq -r '@sh "INAME=\(.iname) LXC_ID=\(.lxc_id) TOKEN=\(.token)"')"
 IF_BLOCK=
 
 CURL_COMMAND=(
 	curl
 	-s
-	-H "Authorization: PVEAPIToken=${TOKEN_ID}=${TOKEN}"
+	-H "Authorization: PVEAPIToken=root@pam!terraform=${TOKEN}"
 	"https://pve.home:8006/api2/json/nodes/pve/lxc/${LXC_ID}/interfaces"
 )
 
@@ -25,8 +25,8 @@ while true; do
 	# from the the dhcp server yet. Break out of loop
 	# when it does.
 	[[ $(jq 'has("inet")' <<<${IF_BLOCK}) == true ]] && break
-
-	sleep 1
+	
+	sleep 2
 done
 
 # Terraform wants an object return so oblige it

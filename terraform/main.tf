@@ -14,7 +14,7 @@ terraform {
 provider "proxmox" {
   # Configuration options
   endpoint = "https://pve.home:8006/"
-  api_token = var.pve_api_token
+  api_token = "root@pam!terraform=${data.sops_file.secrets.data["pve_token"]}"
 
   ssh {
     agent = true
