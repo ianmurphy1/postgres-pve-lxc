@@ -13,11 +13,12 @@ destroy:
       -destroy
 
 secrets:
-  ./script.sh
+  lxcsecrets
 
 update:
   cd ./nixos && \
-  nixos-rebuild switch --flake .#postgres --target-host root@192.168.1.46
+    nix flake update && \
+    nixos-rebuild switch --flake .#postgres --target-host root@${IP}
 
 doit:
   just build deploy secrets update

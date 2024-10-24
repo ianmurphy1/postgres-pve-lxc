@@ -1,7 +1,8 @@
 { pkgs, stdenv, lib, config, inputs, ... }:
 {
   # https://devenv.sh/basics/
-  env.REQUESTS_CA_BUNDLE = "/home/ian/.step/certs/root_ca.crt";
+  env.APP = "postgres";
+  env.IP = "192.168.1.46";
 
   # https://devenv.sh/packages/
   packages = [

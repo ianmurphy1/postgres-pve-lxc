@@ -34,17 +34,6 @@ in
     };
   };
 
-  users.users.postgres = {
-    name = "postgres";
-    uid = config.ids.uids.postgres;
-    group = "postgres";
-    description = "PostgreSQL server user";
-    home = "${dataDir}";
-    useDefaultShell = true;
-  };
-
-  users.groups.postgres.gid = config.ids.gids.postgres;
-
   system.stateVersion = "24.11";
   services.sshd.enable = true;
 

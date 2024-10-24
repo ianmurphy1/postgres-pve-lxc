@@ -3,7 +3,7 @@ data "local_file" "ssh_public_key" {
 }
 
 data "sops_file" "secrets" {
-  source_file = "../secrets.yaml"
+  source_file = "/home/ian/dev/secrets/sops/postgres.secrets.yaml"
 }
 
 resource "proxmox_virtual_environment_file" "test_file" {
