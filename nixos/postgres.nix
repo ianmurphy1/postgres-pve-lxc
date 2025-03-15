@@ -11,6 +11,9 @@ in
     authelia_user_pass = {
       owner = "postgres";
     };
+    commafeed_user_pass = {
+      owner = "postgres";
+    };
   };
 
   systemd.services.postgresql = {
@@ -28,11 +31,19 @@ in
     dataDir = "${dataDir}";
     ensureDatabases = [
       "authelia"
+      "commafeed"
     ];
     enableTCPIP = true;
     ensureUsers = [
       {
         name = "authelia";
+        ensureDBOwnership = true;
+        ensureClauses = {
+          login = true;
+        };
+      }
+      {
+        name = "commafeed";
         ensureDBOwnership = true;
         ensureClauses = {
           login = true;
@@ -79,7 +90,8 @@ in
     owner = "postgres";
     content = ''
         $PSQL -c "ALTER USER postgres WITH PASSWORD '${config.sops.placeholder.postgres_user_pass}'";
-        $PSQL -c "ALTER USER postgres WITH PASSWORD '${config.sops.placeholder.authelia_user_pass}'";
+        $PSQL -c "ALTER USER authelia WITH PASSWORD '${config.sops.placeholder.authelia_user_pass}'";
+        $PSQL -c "ALTER USER commafeed WITH PASSWORD '${config.sops.placeholder.commafeed_user_pass}'";
     '';
   };
 }

@@ -14,13 +14,10 @@
   outputs = { self, nixpkgs, ... }@inputs:
     let
       system = "x86_64-linux";
-      pkgs = import nixpkgs { 
-        system = "x86_64-linux";
-        config.allowUnfree = true;
-      };
+      pkgs = nixpkgs.legacyPackages."${system}";
     in {
       nixosConfigurations.postgres = nixpkgs.lib.nixosSystem {
-        specialArgs = {inherit inputs;};
+        specialArgs = {inherit inputs pkgs;};
         modules = [
           ./configuration.nix
           ./postgres.nix

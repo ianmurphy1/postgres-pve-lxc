@@ -12,7 +12,7 @@ resource "proxmox_virtual_environment_file" "test_file" {
   node_name = "pve"
 
   source_file {
-    path = "../generate/result/tarball/nixos-system-x86_64-linux.tar.xz"
+    path = "../generate/result/tarball/${tolist(fileset("../generate/result/tarball", "*"))[0]}"
     file_name = "postgres-nixos.tar.xz"
   }
 }

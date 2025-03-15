@@ -13,7 +13,7 @@ in
   imports = [
 
   ];
-  system.stateVersion = "24.05";
+  system.stateVersion = "24.11";
   services.sshd.enable = true;
   users.users.postgres = {
     name = "postgres";
