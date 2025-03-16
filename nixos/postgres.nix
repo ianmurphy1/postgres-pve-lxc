@@ -14,6 +14,14 @@ in
     commafeed_user_pass = {
       owner = "postgres";
     };
+    vault_user_pass = {
+      owner = "postgres";
+    };
+  };
+
+  services.postgresqlBackup = {
+    enable = true;
+    backupAll = true;
   };
 
   systemd.services.postgresql = {
@@ -32,6 +40,7 @@ in
     ensureDatabases = [
       "authelia"
       "commafeed"
+      "vault"
     ];
     enableTCPIP = true;
     ensureUsers = [
@@ -44,6 +53,13 @@ in
       }
       {
         name = "commafeed";
+        ensureDBOwnership = true;
+        ensureClauses = {
+          login = true;
+        };
+      }
+      {
+        name = "vault";
         ensureDBOwnership = true;
         ensureClauses = {
           login = true;
@@ -92,6 +108,7 @@ in
         $PSQL -c "ALTER USER postgres WITH PASSWORD '${config.sops.placeholder.postgres_user_pass}'";
         $PSQL -c "ALTER USER authelia WITH PASSWORD '${config.sops.placeholder.authelia_user_pass}'";
         $PSQL -c "ALTER USER commafeed WITH PASSWORD '${config.sops.placeholder.commafeed_user_pass}'";
+        $PSQL -c "ALTER USER vault WITH PASSWORD '${config.sops.placeholder.vault_user_pass}'";
     '';
   };
 }

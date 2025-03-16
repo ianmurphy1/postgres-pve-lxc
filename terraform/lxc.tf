@@ -1,7 +1,3 @@
-data "local_file" "ssh_public_key" {
-  filename = "/home/ian/.ssh/id_ed25519.pub"
-}
-
 data "sops_file" "secrets" {
   source_file = "/home/ian/dev/secrets/sops/postgres.secrets.yaml"
 }
@@ -38,13 +34,19 @@ resource "proxmox_virtual_environment_container" "postgresql" {
     }
     user_account {
       keys = [
-        trimspace(data.local_file.ssh_public_key.content)
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO4yjNiSIJJLbzkZjz/i17xo6US8AUzCIDRYvLUd8a9S iano200@gmail.com",
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID6+FFKlLCiPAkeLHND/RPmamg+XxQ7fLFvq3cxz5Y+v ian@galaxy",
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICh0QrZBTeoT4q1V2TbhmIwaSRv1iGtCVb161HLIPToz ian@nixos"
       ]
     }
   }
 
+  memory {
+    dedicated = 1024
+  }
+
   disk {
-    size = 20
+    size = 60
     datastore_id = "local-lvm"
   }
 

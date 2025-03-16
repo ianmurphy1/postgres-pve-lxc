@@ -29,9 +29,6 @@
       packages = forAllVMs ({ system, pkgs }: {
         postgres = nixos-generators.nixosGenerate {
           system = system;
-          specialArgs = {
-            pkgs = pkgs;
-          };
           modules = [
             # Pin nixpkgs to the flake input, so that the packages installed
             # come from the flake inputs.nixpkgs.url.
