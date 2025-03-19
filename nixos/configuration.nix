@@ -15,6 +15,8 @@ in
     (modulesPath + "/virtualisation/proxmox-lxc.nix")
     ./hardware-configuration.nix
     inputs.sops-nix.nixosModules.sops
+    ./postgres.nix
+    ./template.nix
   ];
 
   sops = {
@@ -22,13 +24,6 @@ in
     age = {
       keyFile = "/root/.config/sops/age/keys.txt";
     };
-    #secrets = {
-    #  root_ssh_key = {
-    #    path = "${config.users.users.root.home}/.ssh/id_ed25519";
-    #    owner = config.users.users.root.name;
-    #    mode = "0600";
-    #  };
-    #};
   };
 
   system.stateVersion = "24.11";
@@ -37,6 +32,10 @@ in
   nix.settings = {
     experimental-features = [ "nix-command" "flakes" ];
   };
+
+  environment.systemPackages = with pkgs; [
+    rclone
+  ];
 
   users.users.root = {
     openssh = {

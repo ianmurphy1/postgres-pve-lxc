@@ -13,17 +13,31 @@
       url = "github:nix-community/NUR";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    ianmurphy1 = {
+      url = "path:/home/ian/dev/nix/nurpkgs";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { nixpkgs, nur, ... }@inputs:
+  outputs = { nixpkgs, nur, ianmurphy1, ... }@inputs:
     let
       system = "x86_64-linux";
+      nurpkgs = import nixpkgs { inherit system; };
     in {
       nixosConfigurations.postgres = nixpkgs.lib.nixosSystem {
         specialArgs = {inherit inputs;};
         inherit system;
         modules = [
-          nur.legacyPackages."${system}".repos.ianmurphy1.modules.pgbackupsync
+          {
+         nixpkgs.config.packageOverrides = pkgs: {
+            nur = import nur {
+              inherit pkgs nurpkgs;
+              repoOverrides = { ianmurphy1 = import ianmurphy1 { inherit pkgs; }; };
+            };
+          };
+        }
+          #nur.legacyPackages."${system}".repos.ianmurphy1.modules.pgbackupsync
+          ianmurphy1.legacyPackages."${system}".modules.pgbackupsync
           ./configuration.nix
         ];
       };

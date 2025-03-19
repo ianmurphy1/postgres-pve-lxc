@@ -4,6 +4,8 @@ let
   dataDir = "/var/lib/postgresql";
 in
 {
+  imports = [
+  ];
   sops.secrets = {
     postgres_user_pass = {
       owner = "postgres";
@@ -22,6 +24,18 @@ in
   services.postgresqlBackup = {
     enable = true;
     backupAll = true;
+    startAt = [
+      "*-*-* 01:15:00"
+    ];
+  };
+
+  services.postgresBackupSync = {
+    enable = true;
+    rcloneConfig = config.sops.templates."rclone.conf".path;
+    location = "${config.services.postgresqlBackup.location}";
+    startAt = [
+      "*-*-* 01:20:00"
+    ];
   };
 
   systemd.services.postgresql = {
