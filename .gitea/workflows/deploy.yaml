@@ -1,0 +1,17 @@
+name: Attempting to update redeploy dex
+on:
+  push:
+  workflow_dispatch:
+    
+jobs:
+  deploy:
+    runs-on: nix
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy dex
+        env:
+          IP: 192.168.1.46
+          APP: postgres
+        run: |
+          set -x
+          just update

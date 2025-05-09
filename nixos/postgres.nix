@@ -19,6 +19,9 @@ in
     vault_user_pass = {
       owner = "postgres";
     };
+    gitea_user_pass = {
+      owner = "postgres";
+    };
   };
 
   services.postgresqlBackup = {
@@ -55,6 +58,7 @@ in
       "authelia"
       "commafeed"
       "vault"
+      "gitea"
     ];
     enableTCPIP = true;
     ensureUsers = [
@@ -74,6 +78,13 @@ in
       }
       {
         name = "vault";
+        ensureDBOwnership = true;
+        ensureClauses = {
+          login = true;
+        };
+      }
+      {
+        name = "gitea";
         ensureDBOwnership = true;
         ensureClauses = {
           login = true;
@@ -123,6 +134,7 @@ in
         $PSQL -c "ALTER USER authelia WITH PASSWORD '${config.sops.placeholder.authelia_user_pass}'";
         $PSQL -c "ALTER USER commafeed WITH PASSWORD '${config.sops.placeholder.commafeed_user_pass}'";
         $PSQL -c "ALTER USER vault WITH PASSWORD '${config.sops.placeholder.vault_user_pass}'";
+        $PSQL -c "ALTER USER gitea WITH PASSWORD '${config.sops.placeholder.gitea_user_pass}'";
     '';
   };
 }
