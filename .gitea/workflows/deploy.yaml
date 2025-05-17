@@ -5,10 +5,10 @@ on:
     
 jobs:
   deploy:
-    runs-on: nix
+    runs-on: native
     steps:
       - uses: actions/checkout@v4
-      - name: Deploy dex
+      - name: Deploy ${{ github.repository }}
         env:
           IP: 192.168.1.46
           APP: postgres
